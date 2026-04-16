@@ -1,7 +1,18 @@
 import axios from 'axios';
 
+function getApiBaseURL() {
+  const configured = import.meta.env.VITE_API_URL?.trim();
+
+  if (!configured) {
+    return '/api';
+  }
+
+  const normalized = configured.replace(/\/+$/, '');
+  return normalized.endsWith('/api') ? normalized : `${normalized}/api`;
+}
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL + '/api',
+  baseURL: getApiBaseURL(),
 });
 
 // ── Medicines ──────────────────────────────────────────────
